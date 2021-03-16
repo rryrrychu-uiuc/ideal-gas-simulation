@@ -16,7 +16,7 @@ class GasContainer {
   /**
    * TODO: Add more parameters to this constructor, and add documentation.
    */
-  GasContainer();
+  GasContainer(const int, const int);
 
   /**
    * Displays the container walls and the current positions of the particles_.
@@ -39,12 +39,33 @@ class GasContainer {
 
   void CheckParticleAtEdge(size_t target_particle);
 
-  int dummy_variable_ = 0;
+  void CompareParticles(size_t particle_one_index, size_t particle_two_index);
+
+  //takes the index of two different particles and returns the velocity of
+  //particle one after the collision
+  vec2 ComputeNewVelocity(size_t particle_one_index, size_t particle_two_index);
+
+  bool IsCollidingWithParticle(size_t particle_one_index, size_t particle_two_index);
+
+  bool IsCollidingWithEdge(size_t target_particle, vec2 wall_position);
+
+  //given the positions and velocities of two particles, check if they are
+  //moving towards each other AND colliding (so particles don't stick)
+  bool IsColliding(vec2 position_one, vec2 position_two, vec2 velocity_one, vec2 velocity_two);
+
+  //
+  bool IsTouching(size_t particle_one_index, size_t particle_two_index);
+
   vector<vec2> particles_;
   vector<vec2> particle_velocities_;
-  const vec2 kleft_corner_;
-  const vec2 kright_corner_;
-  const double kradius_;
+  vec2 left_wall_location_;
+  vec2 right_wall_location_;
+  vec2 top_wall_location_;
+  vec2 bottom_wall_location_;
+  vec2 top_left_corner_;
+  vec2 bottom_right_corner_;
+
+  const float kradius_;
 };
 
 }  // namespace idealgas
