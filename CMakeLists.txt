@@ -52,7 +52,7 @@ include("${CINDER_PATH}/proj/cmake/modules/cinderMakeApp.cmake")
 list(APPEND SOURCE_FILES    src/gas_container.cc
                             src/gas_simulation_app.cc)
 
-list(APPEND TEST_FILES tests/rename_this_test_file.cc)
+list(APPEND TEST_FILES tests/gas_simulation_test.cc)
 
 ci_make_app(
         APP_NAME        gas-simulation
@@ -64,7 +64,7 @@ ci_make_app(
 ci_make_app(
         APP_NAME        gas-simulation-test
         CINDER_PATH     ${CINDER_PATH}
-        SOURCES         tests/test_main.cc ${SOURCE_FILES} ${TEST_FILES}
+        SOURCES tests/gas_container_test.cc ${SOURCE_FILES} ${TEST_FILES}
         INCLUDES        include
         LIBRARIES       catch2
 )
