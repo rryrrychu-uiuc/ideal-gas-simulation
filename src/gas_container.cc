@@ -21,7 +21,6 @@ GasContainer::GasContainer(const int window_size, const int container_offset,
       kradius_(particle_radius),
       kborder_color_("white"),
       kparticle_color_("orange") {
-
   GenerateParticles(num_of_particles, container_offset, window_size);
 }
 
@@ -41,30 +40,57 @@ void GasContainer::AdvanceOneFrame() {
   }
 }
 
-// Helper methods
+vec2 GasContainer::GetLeftWall() {
+  return left_wall_rlocation_;
+}
+
+vec2 GasContainer::GetRightWall() {
+  return right_wall_rlocation_;
+}
+
+vec2 GasContainer::GetTopWall() {
+  return top_wall_rlocation_;
+}
+
+vec2 GasContainer::GetBottomWall() {
+  return bottom_wall_rlocation_;
+}
+
+vector<vec2> GasContainer::GetParticles() {
+  return particles_;
+}
+
+vector<vec2> GasContainer::GetVelocities() {
+  return particle_velocities_;
+}
+
+void GasContainer::AddParticle(vec2 position, vec2 velocity) {
+  particles_.push_back(position);
+  particle_velocities_.push_back(velocity);
+}
 
 void GasContainer::GenerateParticles(const int num_of_particles,
                                      const int offset,
                                      const int container_size) {
   for (int index = 0; index < num_of_particles; index++) {
-    GenerateRandomPosition(offset, container_size);
-    GenerateRandomVelocity();
+    AddParticle(GenerateRandomPosition(offset, container_size),
+                GenerateRandomVelocity());
   }
 }
 
-void GasContainer::GenerateRandomPosition(const int offset,
+vec2 GasContainer::GenerateRandomPosition(const int offset,
                                           const int container_size) {
   int x_pos = rand() % (container_size - (2 * offset)) + offset;
   int y_pos = rand() % (container_size - (2 * offset)) + offset;
-  particles_.push_back(vec2(x_pos, y_pos));
+  return vec2(x_pos, y_pos);
 }
 
-void GasContainer::GenerateRandomVelocity() {
+vec2 GasContainer::GenerateRandomVelocity() {
   float x_vel =
       static_cast<float>(rand() % (int)kradius_ + 1) / (rand() % 20 - kradius_);
   float y_vel =
       static_cast<float>(rand() % (int)kradius_ + 1) / (rand() % 20 - kradius_);
-  particle_velocities_.push_back(vec2(x_vel, y_vel));
+  return vec2(x_vel, y_vel);
 }
 
 void GasContainer::UpdatePosition(size_t target_particle) {
@@ -100,13 +126,13 @@ void GasContainer::CheckEdgeCollisions(size_t target_particle) {
   vec2 particle_position = particles_[target_particle];
   UpdateRelativeWallPositions(particle_position);
 
-  //check collision with vertical walls
+  // check collision with vertical walls
   if (IsCollidingWithEdge(target_particle, left_wall_rlocation_) ||
       IsCollidingWithEdge(target_particle, right_wall_rlocation_)) {
     particle_velocities_[target_particle][0] *= -1;
   }
 
-  //check collisions with horizontal walls
+  // check collisions with horizontal walls
   if (IsCollidingWithEdge(target_particle, top_wall_rlocation_) ||
       IsCollidingWithEdge(target_particle, bottom_wall_rlocation_)) {
     particle_velocities_[target_particle][1] *= -1;
