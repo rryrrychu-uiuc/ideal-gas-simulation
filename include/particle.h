@@ -15,6 +15,8 @@ class Particle {
 
   Particle(vec2 position, vec2 velocity);
 
+  Particle(Particle const &other_particle);
+
   const vec2 GetVelocity();
 
   const vec2 GetPosition();
@@ -46,6 +48,7 @@ class Particle {
 
   //creates a particle that is in a certain range and adds it to the vector
   void GenerateRandomPosition(ci::Rectf bounds);
+
 };
 
 #endif  // IDEAL_GAS_PARTICLE_H

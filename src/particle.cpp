@@ -28,6 +28,14 @@ Particle::Particle(vec2 position, vec2 velocity)
   velocity_ = velocity;
 }
 
+Particle::Particle(Particle const &other_particle)
+    : kRadius(other_particle.kRadius),
+      kMass(other_particle.kMass),
+      kParticleColor(other_particle.kParticleColor) {
+  position_ = other_particle.position_;
+  velocity_ = other_particle.velocity_;
+}
+
 const vec2 Particle::GetVelocity() {
   return velocity_;
 }
@@ -50,16 +58,16 @@ const void Particle::SetVelocity(vec2 velocity) {
 
 void Particle::GenerateRandomVelocity() {
   float x_vel =
-      static_cast<float>(rand() % (int)kRadius + 1) / (rand() % 20 - kRadius);
+      static_cast<float>(rand() % (int)kRadius + 1) / (rand() % 10 - kRadius);
   float y_vel =
-      static_cast<float>(rand() % (int)kRadius + 1) / (rand() % 20 - kRadius);
+      static_cast<float>(rand() % (int)kRadius + 1) / (rand() % 10 - kRadius);
 
   velocity_ = vec2(x_vel, y_vel);
 }
 
 void Particle::GenerateRandomPosition(ci::Rectf bounds) {
-  float x_pos = (rand() % (int)bounds.getWidth()) + bounds.x1;
-  float y_pos = (rand() % (int)bounds.getHeight()) + bounds.y1;
+  float x_pos = rand() % (int)bounds.getWidth() + bounds.x1;
+  float y_pos = rand() % (int)bounds.getHeight() + bounds.y1;
 
   position_ = vec2(x_pos, y_pos);
 }
@@ -72,10 +80,10 @@ vec2 Particle::ComputeNewVelocity(Particle other_particle) {
   vec2 net_position = position_ - other_particle.position_;
   vec2 net_velocity = velocity_ - other_particle.velocity_;
 
-  float mass_ratio = other_particle.kMass / (kMass + other_particle.kMass);
+  float mass_ratio = 2*other_particle.kMass / (kMass + other_particle.kMass);
   float vector_size_squared = pow(glm::length(net_position), 2);
   float position_factor =
-      (mass_ratio* glm::dot(net_position, net_velocity)) / vector_size_squared;
+      (mass_ratio * glm::dot(net_position, net_velocity)) / vector_size_squared;
 
   return velocity_ - (position_factor * net_position);
 }
