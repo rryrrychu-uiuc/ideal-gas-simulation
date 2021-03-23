@@ -22,7 +22,7 @@ class GasContainer {
   GasContainer(const int window_size, const int num_of_particles);
 
   GasContainer(const int left_wall_loc, const int top_wall_loc,
-               const int right_wall_loc, const int bottom_wall_loc);
+               const int right_wall_loc, const int bottom_wall_loc, const int num_of_particles);
 
   /**
    * Displays the container walls and the current positions of the particles_.

@@ -1,7 +1,3 @@
-//
-// Created by rryrr on 3/20/2021.
-//
-
 #include "collision_handler.h"
 
 Collision_Handler::Collision_Handler(const int left_wall_loc,

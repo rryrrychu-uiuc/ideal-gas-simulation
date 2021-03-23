@@ -23,6 +23,8 @@ class Particle {
 
   const float GetRadius();
 
+  const float GetSpeed();
+
   const ci::Color GetColor();
 
   const void SetVelocity(vec2 velocity);

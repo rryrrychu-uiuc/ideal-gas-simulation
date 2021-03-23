@@ -48,6 +48,10 @@ const float Particle::GetRadius() {
   return kRadius;
 }
 
+const float Particle::GetSpeed() {
+  return glm::length(velocity_);
+}
+
 const ci::Color Particle::GetColor() {
   return kParticleColor;
 }
@@ -58,9 +62,9 @@ const void Particle::SetVelocity(vec2 velocity) {
 
 void Particle::GenerateRandomVelocity() {
   float x_vel =
-      static_cast<float>(rand() % (int)kRadius + 1) / (rand() % 10 - kRadius);
+      static_cast<float>(rand() % (int)kRadius + 1) / (rand() % ((int)(kRadius+ 20)) - kRadius);
   float y_vel =
-      static_cast<float>(rand() % (int)kRadius + 1) / (rand() % 10 - kRadius);
+      static_cast<float>(rand() % (int)kRadius + 1) / (rand() % ((int)(kRadius+ 20)) - kRadius);
 
   velocity_ = vec2(x_vel, y_vel);
 }

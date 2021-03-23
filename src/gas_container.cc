@@ -9,6 +9,8 @@ using glm::vec2;
 
 static int container_offset = 10;
 static ci::Color default_particle_color("orange");
+float default_mass = 10;
+float default_radius = 10;
 
 GasContainer::GasContainer(const int window_size, const int num_of_particles)
     : collision_checker_(container_offset, container_offset,
@@ -17,15 +19,16 @@ GasContainer::GasContainer(const int window_size, const int num_of_particles)
           vec2(container_offset, container_offset),
           vec2(window_size - container_offset, window_size - container_offset)),
       kBorderColor("white") {
-  GenerateParticles(num_of_particles, default_particle_color, 10, 10);
+  GenerateParticles(num_of_particles, default_particle_color, default_radius, default_mass);
 }
 
 GasContainer::GasContainer(const int left_wall_loc, const int top_wall_loc,
-                           const int right_wall_loc, const int bottom_wall_loc)
+                           const int right_wall_loc, const int bottom_wall_loc, const int num_of_particles)
     : collision_checker_(left_wall_loc, top_wall_loc, right_wall_loc, bottom_wall_loc),
       kBounds(vec2(left_wall_loc, top_wall_loc),
-              vec2(right_wall_loc, left_wall_loc)),
+              vec2(right_wall_loc, bottom_wall_loc)),
       kBorderColor("white") {
+  GenerateParticles(num_of_particles, default_particle_color, default_radius, default_mass);
 }
 
 void GasContainer::Display() const {
@@ -65,9 +68,8 @@ void GasContainer::GenerateParticles(int num_of_particles, ci::Color color,
 void GasContainer::CheckAllCollisions() {
 
   for (size_t particle_one = 0; particle_one < particles_.size(); particle_one++) {
-
-    CheckEdgeCollision(particle_one);
     CheckParticleCollisions(particle_one);
+    CheckEdgeCollision(particle_one);
   }
 }
 
