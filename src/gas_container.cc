@@ -7,7 +7,7 @@ namespace idealgas {
 
 using glm::vec2;
 
-static int container_offset = 10;
+static float container_offset = 10;
 static ci::Color default_particle_color("orange");
 float default_mass = 10;
 float default_radius = 10;
@@ -22,8 +22,8 @@ GasContainer::GasContainer(const int window_size, const int num_of_particles)
   GenerateParticles(num_of_particles, default_particle_color, default_radius, default_mass);
 }
 
-GasContainer::GasContainer(const int left_wall_loc, const int top_wall_loc,
-                           const int right_wall_loc, const int bottom_wall_loc, const int num_of_particles)
+GasContainer::GasContainer(const float left_wall_loc, const float top_wall_loc,
+                           const float right_wall_loc, const float bottom_wall_loc, const int num_of_particles)
     : collision_checker_(left_wall_loc, top_wall_loc, right_wall_loc, bottom_wall_loc),
       kBounds(vec2(left_wall_loc, top_wall_loc),
               vec2(right_wall_loc, bottom_wall_loc)),
