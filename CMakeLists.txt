@@ -57,7 +57,8 @@ list(APPEND SOURCE_FILES    src/gas_container.cc
 
 list(APPEND TEST_FILES      tests/gas_container_test.cc
                             tests/particle_test.cpp
-                            tests/histogram_test.cpp)
+                            tests/histogram_test.cpp
+                            tests/collision_handler_test.cpp)
 
 ci_make_app(
         APP_NAME        gas-simulation

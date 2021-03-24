@@ -57,7 +57,7 @@ class Histogram {
   float x_interval_;
   float y_interval_;
 
-  static const int kNumContainers = 5;
+  const static size_t kNumContainers = 5;
   int frequencies_[kNumContainers];
 
   // given a container number, draw the associated histogram bar

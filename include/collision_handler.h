@@ -27,14 +27,17 @@ class Collision_Handler {
   vec2 NewVelocityAfterEdgeCollision(Particle target_particle);
 
   /**
-   * Returns true when a particle and an edge touch and collide
-   */
-  bool IsCollidingWithEdge(Particle target_particle, vec2 wall_position);
-
-  /**
    * Returns true if two particles are moving towards each other and touching
    */
   bool IsCollidingWithParticle(Particle particle_one, Particle particle_two);
+
+  vec2 GetLeftWall();
+
+  vec2 GetRightWall();
+
+  vec2 GetTopWall();
+
+  vec2 GetBottomWall();
 
  private:
   vec2 left_wall_rlocation_;
@@ -43,6 +46,9 @@ class Collision_Handler {
   vec2 bottom_wall_rlocation_;
 
   vector<Particle> new_particles;
+
+  // Returns true when a particle and an edge touch and collide
+  bool IsCollidingWithEdge(Particle target_particle, vec2 wall_position);
 };
 
 #endif  // IDEAL_GAS_COLLISION_HANDLER_H

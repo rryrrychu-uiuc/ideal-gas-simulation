@@ -65,7 +65,6 @@ void GasContainer::GenerateParticles(int num_of_particles, ci::Color color,
 }
 
 void GasContainer::CheckAllCollisions() {
-
   for (size_t particle_one = 0; particle_one < particles_.size(); particle_one++) {
     CheckParticleCollisions(particle_one);
     CheckEdgeCollision(particle_one);
@@ -90,5 +89,4 @@ void GasContainer::CheckParticleCollisions(size_t particle_one){
     particles_[particle_two].SetVelocity(new_velocities[1]);
   }
 }
-
 }  // namespace idealgas

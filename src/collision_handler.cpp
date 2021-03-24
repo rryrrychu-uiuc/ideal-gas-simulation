@@ -64,3 +64,19 @@ bool Collision_Handler::IsCollidingWithParticle(Particle particle_one,
   return particle_one.IsMovingTowards(particle_two) &&
          particle_one.IsTouching(particle_two);
 }
+
+vec2 Collision_Handler::GetLeftWall() {
+  return left_wall_rlocation_;
+}
+
+vec2 Collision_Handler::GetRightWall() {
+  return right_wall_rlocation_;
+}
+
+vec2 Collision_Handler::GetTopWall() {
+  return top_wall_rlocation_;
+}
+
+vec2 Collision_Handler::GetBottomWall() {
+  return bottom_wall_rlocation_;
+}

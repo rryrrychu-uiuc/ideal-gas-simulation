@@ -42,11 +42,61 @@ TEST_CASE("Test UpdatePosition") {
 }
 
 TEST_CASE("Test ComputeNewVelocity") {
-
+  SECTION("Correct Velocity") {
+    vec2 position1(1,1);
+    vec2 velocity1(1,0);
+    vec2 position2(1,1);
+    vec2 velocity2(1,0);
+    Particle test_particle1(position1, velocity1);
+    Particle test_particle2(position2, velocity2);
+  }
 }
 
-TEST_CASE("Test HasCollidedWith") {
+TEST_CASE("Test IsMovingTowards") {
+  SECTION("Particles are not moving") {
+    Particle particle_one(vec2(200,200), vec2(0,0));
+    Particle particle_two(vec2(220,200), vec2(0,0));
+    REQUIRE(!particle_one.IsMovingTowards(particle_two));
+  }
 
+  SECTION("Particles are not moving towards each other") {
+    Particle particle_one(vec2(200,200), vec2(1,1));
+    Particle particle_two(vec2(220,200), vec2(1,1));
+    REQUIRE(!particle_one.IsMovingTowards(particle_two));
+  }
+
+  SECTION("Particles are moving towards each other") {
+    Particle particle_one(vec2(200,200), vec2(1,1));
+    Particle particle_two(vec2(220,200), vec2(-1,-1));
+    REQUIRE(particle_one.IsMovingTowards(particle_two));
+  }
 }
 
-TEST_CASE("Test IsTouching") {}
+TEST_CASE("Test IsTouching") {
+  SECTION("Particles are touching") {
+    Particle particle_one(vec2(200,200), vec2(0,0));
+    Particle particle_two(vec2(220,200), vec2(0,0));
+    REQUIRE(particle_one.IsTouching(particle_two));
+  }
+  SECTION("Particles are not touching") {
+    Particle particle_one(vec2(200,200), vec2(0,0));
+    Particle particle_two(vec2(221,221), vec2(0,0));
+    REQUIRE(!particle_one.IsTouching(particle_two));
+  }
+}
+
+TEST_CASE("Test GetSpeed") {
+  SECTION("Positive velocity proper speed") {
+    vec2 position(1,1);
+    vec2 velocity(3,4);
+    Particle test_particle(position, velocity);
+    REQUIRE(test_particle.GetSpeed() == 5);
+  }
+
+  SECTION("Negative velocity proper speed") {
+    vec2 position(-1,-1);
+    vec2 velocity(-3,-4);
+    Particle test_particle(position, velocity);
+    REQUIRE(test_particle.GetSpeed() == 5);
+  }
+}
