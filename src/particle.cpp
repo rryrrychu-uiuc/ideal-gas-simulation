@@ -1,7 +1,3 @@
-//
-// Created by rryrr on 3/20/2021.
-//
-
 #include "particle.h"
 
 Particle::Particle()
@@ -36,6 +32,51 @@ Particle::Particle(Particle const &other_particle)
   velocity_ = other_particle.velocity_;
 }
 
+void Particle::UpdatePosition() {
+  position_ += velocity_;
+}
+
+vec2 Particle::ComputeNewVelocity(Particle other_particle) {
+  vec2 net_position = position_ - other_particle.position_;
+  vec2 net_velocity = velocity_ - other_particle.velocity_;
+
+  //use the formula given to calculate resulting velocity
+  float mass_ratio = 2 * other_particle.kMass / (kMass + other_particle.kMass);
+  float vector_size_squared = pow(glm::length(net_position), 2);
+  float position_factor =
+      (mass_ratio * glm::dot(net_position, net_velocity)) / vector_size_squared;
+
+  return velocity_ - (position_factor * net_position);
+}
+
+bool Particle::IsMovingTowards(Particle other_particle) {
+  vec2 net_velocity = velocity_ - other_particle.velocity_;
+  vec2 net_position = position_ - other_particle.position_;
+
+  return glm::dot(net_velocity, net_position) < 0;
+}
+
+bool Particle::IsTouching(Particle other_particle) {
+  return glm::distance(position_, other_particle.position_) <=
+         (kRadius + other_particle.kRadius);
+}
+
+void Particle::GenerateRandomVelocity() {
+  float x_vel = static_cast<float>(rand() % (int)kRadius + 1) /
+                (rand() % ((int)(kRadius + 20)) - kRadius);
+  float y_vel = static_cast<float>(rand() % (int)kRadius + 1) /
+                (rand() % ((int)(kRadius + 20)) - kRadius);
+
+  velocity_ = vec2(x_vel, y_vel);
+}
+
+void Particle::GenerateRandomPosition(ci::Rectf bounds) {
+  float x_pos = rand() % (int)bounds.getWidth() + bounds.x1;
+  float y_pos = rand() % (int)bounds.getHeight() + bounds.y1;
+
+  position_ = vec2(x_pos, y_pos);
+}
+
 const vec2 Particle::GetVelocity() {
   return velocity_;
 }
@@ -58,48 +99,4 @@ const ci::Color Particle::GetColor() {
 
 const void Particle::SetVelocity(vec2 velocity) {
   velocity_ = velocity;
-}
-
-void Particle::GenerateRandomVelocity() {
-  float x_vel =
-      static_cast<float>(rand() % (int)kRadius + 1) / (rand() % ((int)(kRadius+ 20)) - kRadius);
-  float y_vel =
-      static_cast<float>(rand() % (int)kRadius + 1) / (rand() % ((int)(kRadius+ 20)) - kRadius);
-
-  velocity_ = vec2(x_vel, y_vel);
-}
-
-void Particle::GenerateRandomPosition(ci::Rectf bounds) {
-  float x_pos = rand() % (int)bounds.getWidth() + bounds.x1;
-  float y_pos = rand() % (int)bounds.getHeight() + bounds.y1;
-
-  position_ = vec2(x_pos, y_pos);
-}
-
-void Particle::UpdatePosition() {
-  position_ += velocity_;
-}
-
-vec2 Particle::ComputeNewVelocity(Particle other_particle) {
-  vec2 net_position = position_ - other_particle.position_;
-  vec2 net_velocity = velocity_ - other_particle.velocity_;
-
-  float mass_ratio = 2*other_particle.kMass / (kMass + other_particle.kMass);
-  float vector_size_squared = pow(glm::length(net_position), 2);
-  float position_factor =
-      (mass_ratio * glm::dot(net_position, net_velocity)) / vector_size_squared;
-
-  return velocity_ - (position_factor * net_position);
-}
-
-bool Particle::HasCollidedWith(Particle other_particle) {
-  vec2 net_velocity = velocity_ - other_particle.velocity_;
-  vec2 net_position = position_ - other_particle.position_;
-
-  return glm::dot(net_velocity, net_position) < 0;
-}
-
-bool Particle::IsTouching(Particle other_particle) {
-  return glm::distance(position_, other_particle.position_) <=
-         (kRadius + other_particle.kRadius);
 }

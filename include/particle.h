@@ -5,7 +5,6 @@ using glm::vec2;
 #define IDEAL_GAS_PARTICLE_H
 
 class Particle {
-
  public:
   Particle();
 
@@ -16,6 +15,27 @@ class Particle {
   Particle(vec2 position, vec2 velocity);
 
   Particle(Particle const &other_particle);
+
+  /**
+   * Change the position of a particle based on its velocity
+   */
+  void UpdatePosition();
+
+  /**
+   * Given a particle, calculate the velocity of the current particle after
+   * collision
+   */
+  vec2 ComputeNewVelocity(Particle other_particle);
+
+  /**
+   * Returns true if two particles are moving towards each other
+   */
+  bool IsMovingTowards(Particle other_particle);
+
+  /**
+   * Returns true if two particles are touching
+   */
+  bool IsTouching(Particle other_particle);
 
   const vec2 GetVelocity();
 
@@ -29,14 +49,6 @@ class Particle {
 
   const void SetVelocity(vec2 velocity);
 
-  void UpdatePosition();
-
-  vec2 ComputeNewVelocity(Particle other_particle);
-
-  bool HasCollidedWith(Particle other_particle);
-
-  bool IsTouching(Particle other_particle);
-
  private:
   const ci::Color kParticleColor;
   const float kRadius;
@@ -45,12 +57,11 @@ class Particle {
   vec2 velocity_;
   vec2 position_;
 
-  //assigns a random velocity to a particle based on it's radius
+  // assigns a random velocity to a particle based on it's radius
   void GenerateRandomVelocity();
 
-  //creates a particle that is in a certain range and adds it to the vector
+  // creates a particle that is in a certain range and adds it to the vector
   void GenerateRandomPosition(ci::Rectf bounds);
-
 };
 
 #endif  // IDEAL_GAS_PARTICLE_H

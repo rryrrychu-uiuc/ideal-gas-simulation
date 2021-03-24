@@ -1,9 +1,9 @@
 #include "collision_handler.h"
 
-Collision_Handler::Collision_Handler(const int left_wall_loc,
-                                     const int top_wall_loc,
-                                     const int right_wall_loc,
-                                     const int bottom_wall_loc)
+Collision_Handler::Collision_Handler(const float left_wall_loc,
+                                     const float top_wall_loc,
+                                     const float right_wall_loc,
+                                     const float bottom_wall_loc)
     : left_wall_rlocation_(left_wall_loc, 0),
       right_wall_rlocation_(right_wall_loc, 0),
       top_wall_rlocation_(0, top_wall_loc),
@@ -17,9 +17,8 @@ void Collision_Handler::UpdateRelativeWallPositions(Particle target_particle) {
   bottom_wall_rlocation_[0] = target_particle.GetPosition()[0];
 }
 
-// given two particle, change their velocities if they have collided
-vector<vec2> Collision_Handler::NewVelocityAfterParticleCollision(Particle particle_one,
-                                               Particle particle_two) {
+vector<vec2> Collision_Handler::NewVelocityAfterParticleCollision(
+    Particle particle_one, Particle particle_two) {
   vector<vec2> new_velocities;
   new_velocities.push_back(particle_one.GetVelocity());
   new_velocities.push_back(particle_two.GetVelocity());
@@ -32,8 +31,8 @@ vector<vec2> Collision_Handler::NewVelocityAfterParticleCollision(Particle parti
   return new_velocities;
 }
 
-// checks and updates velocity if the particle collides with an edge
-vec2 Collision_Handler::NewVelocityAfterEdgeCollision(Particle target_particle) {
+vec2 Collision_Handler::NewVelocityAfterEdgeCollision(
+    Particle target_particle) {
   UpdateRelativeWallPositions(target_particle);
   vec2 new_velocity = target_particle.GetVelocity();
 
@@ -52,17 +51,16 @@ vec2 Collision_Handler::NewVelocityAfterEdgeCollision(Particle target_particle) 
   return new_velocity;
 }
 
-// returns true when a particle and an edge touch and collide
 bool Collision_Handler::IsCollidingWithEdge(Particle target_particle,
                                             vec2 wall_position) {
   Particle wall(wall_position, vec2(0, 0));
 
   return target_particle.IsTouching(wall) &&
-         target_particle.HasCollidedWith(wall);
+         target_particle.IsMovingTowards(wall);
 }
 
 bool Collision_Handler::IsCollidingWithParticle(Particle particle_one,
                                                 Particle particle_two) {
-  return particle_one.HasCollidedWith(particle_two) &&
+  return particle_one.IsMovingTowards(particle_two) &&
          particle_one.IsTouching(particle_two);
 }
