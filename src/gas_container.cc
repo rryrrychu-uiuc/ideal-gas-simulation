@@ -23,12 +23,11 @@ GasContainer::GasContainer(const int window_size, const int num_of_particles)
 }
 
 GasContainer::GasContainer(const float left_wall_loc, const float top_wall_loc,
-                           const float right_wall_loc, const float bottom_wall_loc, const int num_of_particles)
+                           const float right_wall_loc, const float bottom_wall_loc)
     : collision_checker_(left_wall_loc, top_wall_loc, right_wall_loc, bottom_wall_loc),
       kBounds(vec2(left_wall_loc, top_wall_loc),
               vec2(right_wall_loc, bottom_wall_loc)),
       kBorderColor("white") {
-  GenerateParticles(num_of_particles, default_particle_color, default_radius, default_mass);
 }
 
 void GasContainer::Display() const {
